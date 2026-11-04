@@ -9,7 +9,7 @@ load_dotenv()
 MONGO_URI = os.getenv("MONGO_URI", "")
 DB_NAME = os.getenv("DB_NAME", "")
 
-def check_database_exists():
+def test_database_exists():
     try:
         # 1. Connect to MongoDB
         client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000)
@@ -34,4 +34,4 @@ def check_database_exists():
         print(f"❌ An unexpected error occurred: {e}")
 
 if __name__ == "__main__":
-    check_database_exists()
+    test_database_exists()

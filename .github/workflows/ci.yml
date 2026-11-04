@@ -47,6 +47,6 @@ jobs:
         env:
           PYTHONPATH: .
           # Pass test database URL if your app reads from environment variables
-          MONGO_URL: MONGO_URL: mongodb://localhost:27017
+          MONGO_URL: mongodb://localhost:27017
         run: |
           python -m pytest -v

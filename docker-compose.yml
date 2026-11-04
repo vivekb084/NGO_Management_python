@@ -1,0 +1,58 @@
+services:
+  # 1. The Front-Door Entry Point (Handles incoming traffic & splits it to Nginx)
+  router:
+    image: haproxy:alpine # Or an external load balancer / cloud router
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro  # 👈 This line is mandatory
+    ports:
+      - "8000:80"
+    networks:
+      - ngo_net
+
+  # 2. Scaled Nginx Load Balancers
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    deploy:
+      replicas: 2  # 👈 Running 2 Nginx load balancer replicas
+    networks:
+      - ngo_net
+
+  # 3. Scaled FastAPI Backends
+  ngo_management:
+    build: .
+    image: ngo-management-app
+    environment:
+    - MONGO_URI=mongodb://admin:admin@host.docker.internal:27017/?authSource=admin
+    - DB_NAME=NGO_Management
+    deploy:
+      replicas: 3 # 👈 Running 3 FastAPI backend replicas
+    restart: always
+    networks:
+      - ngo_net
+
+networks:
+  ngo_net:
+    driver: bridge
+
+# services:
+#   nginx:
+#     image: nginx:alpine
+#     container_name: nginx_load_balancer
+#     ports:
+#       - "8000:80"  # Maps host port 8000 to Nginx's port 80
+#     volumes:
+#       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#     depends_on:
+#       - ngo_management
+
+#   ngo_management:
+#     build: .
+#     image: ngo-management-app
+#     environment:
+#     - MONGO_URI=mongodb://admin:admin@host.docker.internal:27017/?authSource=admin
+#     - DB_NAME=NGO_Management
+#     deploy:
+#       replicas: 4  # Automatically spin up 4 instances of FastAPI behind Nginx
+#     restart: always

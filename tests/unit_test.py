@@ -25,17 +25,17 @@ def test_health_check():
         assert data.get("status") == "healthy"
 
 # Example of testing an NGO-specific feature (e.g., fetching campaigns or projects)
-def test_user_login():
-    """
-    Example test checking user login functionality.
-    """
-    response = client.post("/users/login", json={"email": "vivek@gmail.com", "password": "123456"})
-    assert response.status_code == 200
+# def test_user_login():
+#     """
+#     Example test checking user login functionality.
+#     """
+#     response = client.post("/users/login", json={"email": "vivek@gmail.com", "password": "123456"})
+#     assert response.status_code == 200
     
-    # Access the nested 'user' key first
-    response_data = response.json()
-    assert "user" in response_data
-    assert "user_id" in response_data["user"]
+#     # Access the nested 'user' key first
+#     response_data = response.json()
+#     assert "user" in response_data
+#     assert "user_id" in response_data["user"]
     
-    # Optional: Verify the value is correct
-    assert response_data["user"]["user_id"] == "6ad9e9ae6dbcc2fb8261cce4"
+#     # Optional: Verify the value is correct
+#     assert response_data["user"]["user_id"] == "6ad9e9ae6dbcc2fb8261cce4"

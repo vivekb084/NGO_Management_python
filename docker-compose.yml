@@ -26,6 +26,7 @@ services:
     environment:
     - MONGO_URI=mongodb://admin:admin@host.docker.internal:27017/?authSource=admin
     - DB_NAME=NGO_Management
+    - PYTHONPATH=.  # 👈 Add this line
     deploy:
       replicas: 3 # 👈 Running 3 FastAPI backend replicas
     restart: always
